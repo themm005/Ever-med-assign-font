@@ -1,25 +1,95 @@
-import logo from './logo.svg';
-import './App.css';
+import { useContext } from "react";
+import { AuthContext } from "./context/AuthContextProvider";
+
+
+import Login from "./pages/login/login";
+import { Switch, Route, Redirect } from "react-router-dom";
+import Home from "./pages/home/home";
+import Admin from './pages/admin/admin'
+import AddCustomer from "./pages/addCustomer/addCustomer";
+import EditPage from './pages/editPage/editPage'
+import SingleCustomer from './pages/singleCustomer/singleCustomer'
+
+const adminRoutes = [
+  {
+    path: "/home",
+    component: Home,
+  },
+  {
+    path: "/admin",
+    component: Admin,
+  },
+  {
+    path: "/add-new-customer",
+    component: AddCustomer,
+  },
+  {
+    path: "/edit/:id",
+    component: EditPage,
+  },
+  {
+    path: "/customer/:id",
+    component:SingleCustomer
+  },
+];
+
+const userRoutes = [
+  {
+    path: "/home",
+    component: Home,
+  },
+  {
+    path: "/",
+    component: Login,
+  },
+  {
+    path: "/add-new-customer",
+    component: AddCustomer,
+  },
+  {
+    path: "/edit/:id",
+    component:EditPage
+  }
+];
+const publicRoutes = [
+  {
+    path: "/",
+    component: Login,
+  },
+ 
+];
 
 function App() {
+  const { user }  = useContext(AuthContext);
+  console.log(user.role)
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      {user &&
+        user.role === "ADMIN" &&
+        adminRoutes.map((el, index) => (
+          <Route key={index} exact path={el.path} component={el.component} />
+        ))}
+      {user &&
+        user.role === "USER" &&
+        userRoutes.map((el, index) => (
+          <Route key={index} exact path={el.path} component={el.component} />
+        ))}
+
+      {!user && 
+        publicRoutes.map((el, index) => (
+          <Route key={index} exact path={el.path} component={el.component} />
+        ))}
+      <Redirect to="/" />
+    </Switch>
   );
 }
 
 export default App;
+
+// {
+//   user &&
+//     user.role === "USER" &&
+//     userRoutes.map((el, index) => (
+//       <Route key={index} exact path={el.path} component={el.component} />
+//     ));
+// }

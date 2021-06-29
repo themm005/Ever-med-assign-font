@@ -1,0 +1,21 @@
+.con-listCustomer{
+  height: 100vh;
+  display:flex;
+  flex-direction: column;
+  align-items: center; 
+  /* justify-content: center; */
+  
+}
+
+.btn{
+  margin-top:30px; 
+  margin-left: 30px;
+}
+
+.body{
+  background:linear-gradient(
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.5)
+    ),url("https://picsum.photos/seed/picsum/1100/627");
+  background-size:cover
+}
